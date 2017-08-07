@@ -11,7 +11,7 @@ public class Backup_main {
 		String user = "bhucsapu";
 		int num = 842;
 		int nul = 0;
-		File DirLocation = new File("C:/users/" + user + "/Downloads");
+		File DirLocation = new File("C:/users/" + user);
 		if (num < 1000) {
 			File theDir = new File("D:\\BHUM" + nul + num);
 			if (!theDir.exists()) {	
@@ -86,7 +86,7 @@ public class Backup_main {
 	    			InputStream in = new FileInputStream(src);
 	    	        OutputStream out = new FileOutputStream(dest);
 
-	    	        byte[] buffer = new byte[4096];
+	    	        byte[] buffer = new byte[1024];
 
 	    	        int length;
 	    	        //copy the file content in bytes
