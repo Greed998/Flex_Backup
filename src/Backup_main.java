@@ -20,7 +20,7 @@ public class Backup_main {
 		if (num < 1000) {
 			File theDir = new File("D:\\BHUM" + nul + num);
 			if (!theDir.exists()) {
-				System.out.println("creating directory: " + theDir.getName());
+				System.out.println("Könyvtár Készítés:"  + theDir.getName());
 				boolean result = false;
 				try {
 					theDir.mkdir();
@@ -29,7 +29,7 @@ public class Backup_main {
 					// handle it
 				}
 				if (result) {
-					System.out.println("DIR created");
+					System.out.println("");
 					
 					input.copyTo(output, true); // true to overwrite any existing files
 					// Spawn threads
@@ -88,16 +88,14 @@ public class Backup_main {
 
 					threads.clear();
 
-					System.out.println("Copy complete!");
-
 				}
 			} else {
-				System.out.println("Dir already Created");
+				System.out.println("Könyvtár Elkészítve");
 			}
 		} else {
 			File theDir = new File("D:\\BHUM" + num);
 			if (!theDir.exists()) {
-				System.out.println("creating directory: " + theDir.getName());
+				System.out.println("Könyvtár Készítés:" + theDir.getName());
 				boolean result = false;
 				try {
 					theDir.mkdir();
@@ -106,7 +104,7 @@ public class Backup_main {
 					// handle it
 				}
 				if (result) {
-					System.out.println("DIR created");
+					System.out.println("Könyvtár Elkészítve");
 				}
 			} else {
 				System.out.println("Dir already Created");
@@ -168,7 +166,6 @@ public class Backup_main {
 
 		threads.clear();
 
-		System.out.println("Copy complete!");
 
 	}
 
