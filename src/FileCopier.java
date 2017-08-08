@@ -29,6 +29,7 @@ public class FileCopier implements Runnable {
           while (true) {
  
               javaxt.io.File file = null;
+              
               synchronized (pool) {
                   while (pool.isEmpty()) {
                       try {
@@ -38,6 +39,7 @@ public class FileCopier implements Runnable {
                           return;
                       }
                   }
+                  
                   file = (javaxt.io.File) pool.get(0);
                   if (file!=null) pool.remove(0);
                   pool.notifyAll();

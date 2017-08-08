@@ -11,49 +11,58 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 public class Backup_main {
 
 	public static void main(String[] args) {
-		String user = "bhucsapu";
+		
+		String user = "bhuzbonu";
 		int num = 842;
 		int nul = 0;
 		javaxt.io.Directory input = new javaxt.io.Directory("C:/Users/" + user);
-		javaxt.io.Directory output = new javaxt.io.Directory("D:/BHUM" + nul + num);
+		javaxt.io.Directory output = new javaxt.io.Directory("E:/BHUM" + nul + num);
 		String fileFilter = "*.json";
+		
 		if (num < 1000) {
-			File theDir = new File("D:\\BHUM" + nul + num);
+			
+			File theDir = new File("E:\\BHUM" + nul + num);
+			
 			if (!theDir.exists()) {
+				
 				System.out.println("Könyvtár Készítés:"  + theDir.getName());
 				boolean result = false;
+				
 				try {
 					theDir.mkdir();
 					result = true;
+					
 				} catch (SecurityException se) {
-					// handle it
+
 				}
 				if (result) {
-					System.out.println("");
-					
-					input.copyTo(output, true); // true to overwrite any existing files
-					// Spawn threads
+					input.copyTo(output, true);
 					int numThreads = 4;
 					java.util.ArrayList<Thread> threads = new java.util.ArrayList<Thread>();
+					
 					for (int i = 0; i < numThreads; i++) {
 						Thread thread = new Thread(new FileCopier(input, output));
 						threads.add(thread);
 						thread.start();
 					}
 
-					// Initiate search
 					int numFiles = 0;
 					java.util.List results = input.getChildren(true, fileFilter, false);
 					while (true) {
+						
 						Object item;
+						
 						synchronized (results) {
+							
 							while (results.isEmpty()) {
+								
 								try {
 									results.wait();
 								} catch (InterruptedException e) {
 									break;
 								}
 							}
+							
 							item = results.remove(0);
 							results.notifyAll();
 						}
@@ -62,20 +71,19 @@ public class Backup_main {
 
 							if (item instanceof javaxt.io.File) {
 
-								// Add file to the file copier
 								javaxt.io.File file = (javaxt.io.File) item;
 								FileCopier.add(file);
 								numFiles++;
 							}
-						} else { // item is null. This is our queue that the search is done!
+						} else { 
 							break;
 						}
 					}
 
-					// Notify threads that we are done adding files to the queue
 					FileCopier.done();
-					// Wait for threads to complete
+
 					while (true) {
+						
 						try {
 							for (Thread thread : threads) {
 								thread.join();
@@ -84,6 +92,7 @@ public class Backup_main {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						
 					}
 
 					threads.clear();
@@ -107,23 +116,26 @@ public class Backup_main {
 					System.out.println("Könyvtár Elkészítve");
 				}
 			} else {
-				System.out.println("Dir already Created");
+				System.out.println("A könyvtár már kész");
 			}
 		}
 
 		int numThreads = 4;
 		java.util.ArrayList<Thread> threads = new java.util.ArrayList<Thread>();
+		
 		for (int i = 0; i < numThreads; i++) {
 			Thread thread = new Thread(new FileCopier(input, output));
 			threads.add(thread);
 			thread.start();
 		}
 
-		// Initiate search
 		int numFiles = 0;
 		java.util.List results = input.getChildren(true, fileFilter, false);
+		
 		while (true) {
+			
 			Object item;
+			
 			synchronized (results) {
 				while (results.isEmpty()) {
 					try {
@@ -132,27 +144,28 @@ public class Backup_main {
 						break;
 					}
 				}
+				
 				item = results.remove(0);
 				results.notifyAll();
+				
 			}
 
 			if (item != null) {
 
 				if (item instanceof javaxt.io.File) {
 
-					// Add file to the file copier
 					javaxt.io.File file = (javaxt.io.File) item;
 					FileCopier.add(file);
 					numFiles++;
 				}
-			} else { // item is null. This is our queue that the search is done!
+				
+			} else { 
 				break;
 			}
 		}
-
-		// Notify threads that we are done adding files to the queue
+		
 		FileCopier.done();
-		// Wait for threads to complete
+
 		while (true) {
 			try {
 				for (Thread thread : threads) {
